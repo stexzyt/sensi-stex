@@ -1,0 +1,10 @@
+SENSI $TEX — SITIO COMPLETO
+
+Archivos:
+- index.html: portada con ventana de bienvenida y fondo universo animado.
+- generador.html: generador de sensibilidad.
+- assets/logo-stex.png: emblema de SENSI $TEX.
+
+Para publicar en GitHub Pages, sube todos estos archivos y la carpeta assets conservando la estructura.
+
+El fondo reproduce el comportamiento de la referencia: degradado animado de 8 segundos y 55 partículas Canvas en cinco colores, con movimiento aleatorio suave y brillo.

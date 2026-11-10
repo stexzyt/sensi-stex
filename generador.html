@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050507">
+<meta name="description" content="SENSI $TEX — generador orientativo de sensibilidades Free Fire con DPI y sin DPI.">
+<title>SENSI $TEX | Generador de sensibilidad</title>
+<link rel="icon" type="image/png" href="assets/logo-stex.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
+:root{--bg:#050507;--panel:#0d0c11;--red:#ff003e;--redlight:#ff2458;--gold:#ffca3a;--muted:#a7a6ad;--stroke:#45424a;--text:#f8f8fb}
+*{box-sizing:border-box}[hidden]{display:none!important}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;font-size:13px}a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #ffd147;outline-offset:3px}
+.topbar{border-bottom:1px solid #333139;background:#09090c}.nav-inner{max-width:1280px;margin:auto;padding:15px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:78px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:43px;height:43px;border:0;border-radius:50%;object-fit:contain;box-shadow:0 0 10px #e7004359}.brand-name{font-size:28px;font-weight:900;letter-spacing:-.8px;white-space:nowrap}.brand-name em{font-style:normal;color:var(--red);padding-left:5px}.nav-links{display:flex;gap:29px;align-items:center}.nav-links a{font-size:12px;letter-spacing:.7px;color:#b6b5c0;font-weight:900}.nav-links a:hover{color:#fff}
+.hero{max-width:1000px;text-align:center;margin:0 auto;padding:30px 20px 23px}.eyebrow{display:inline-block;color:var(--red);border:1px solid #9e1235;background:#250810;border-radius:30px;padding:8px 18px;font-size:11px;letter-spacing:1.4px;font-weight:900}.hero h1{font-size:clamp(24px,3.2vw,34px);line-height:1.2;letter-spacing:-.5px;font-weight:900;margin:19px 0 12px}.hero h1 span{color:var(--red)}.hero p{font-size:12px;color:#b3b2bb;line-height:1.85;max-width:740px;margin:0 auto}
+.workspace{width:min(1220px,calc(100% - 34px));margin:65px auto 0;display:grid;grid-template-columns:minmax(190px,1fr) minmax(420px,470px) minmax(190px,1fr);gap:29px;align-items:center}.sidebar{background:#0e0d13;border:1px solid #c00b38;border-radius:19px;padding:22px 20px;box-shadow:0 0 23px #ff003e38,0 0 4px #ff003e42}.sidebar h2{font-size:14px;color:var(--red);letter-spacing:1.1px;font-weight:900;margin:0 0 16px}.sidebar p{font-size:12px;font-weight:600;line-height:1.8;color:#d3d0d7;margin:0}.sidebar.left{transform:translateY(105px)}.sidebar.right{transform:translateY(-45px)}.sidebar.right h2{color:var(--gold)}
+.generator{background:#050507;border:1.5px solid var(--red);border-radius:19px;padding:15px 18px 15px;box-shadow:0 0 25px #ff003e33,0 0 45px #ff003e18;min-width:0}.seg{display:grid;gap:6px}.seg.two{grid-template-columns:repeat(2,minmax(0,1fr))}.seg.three{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:7px}.seg label{cursor:pointer;min-width:0}.seg input{position:absolute;opacity:0;width:1px;height:1px}.seg span{display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid #55525e;border-radius:8px;height:38px;background:#141318;color:#bdbbc5;font-weight:800;font-size:11px;white-space:nowrap}.seg input:checked+span{background:var(--red);color:#fff;border-color:#ff7695;box-shadow:0 0 15px #ff003e3b}.seg input:focus-visible+span{outline:2px solid var(--gold)}.cross{font-weight:900;color:#f4f4f4;font-size:18px;line-height:0}.action-line{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px;margin-top:7px}.input-wrap{position:relative;min-width:0}.input-wrap:before{content:'⌕';position:absolute;left:11px;top:5px;color:#f59aac;font-size:24px;pointer-events:none}.model{width:100%;height:38px;background:#141318;color:#fff;border:1px solid #56505c;border-radius:8px;padding:0 8px 0 32px;font-size:11px;font-weight:800;outline:0;text-transform:uppercase}.model::placeholder{color:#a4a1ac}.model:focus{border-color:var(--red)}.calibrate,.premium{height:38px;border-radius:8px;padding:0 12px;font-size:11px;font-weight:900;white-space:nowrap}.calibrate{color:#fff;background:#cf0636;border:1px solid #f85c7d;box-shadow:0 0 11px #ff003e35}.premium{color:var(--gold);background:#16130f;border:1px solid #685117;box-shadow:0 0 9px #ffd04a14}.calibrate:hover{background:#ff003e}.premium:hover{border-color:#ffca3a}.error{color:#ff7897;font-size:11px;line-height:1.4;margin:5px 0 0;min-height:0}.metrics{margin-top:14px}.metric{margin:0 0 10px}.metric-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;font-size:12px;font-weight:900}.metric-label{display:flex;gap:5px;align-items:center}.metric-label b{color:var(--red);font-size:16px}.metric-number{font-variant-numeric:tabular-nums}.track{height:7px;background:#16151b;border:1px solid #45414a;border-radius:7px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#b50935,#ff003e);width:0;box-shadow:0 0 10px #ff003e88;transition:width .65s ease}.bottom-row{display:flex;align-items:stretch;gap:9px;flex-wrap:wrap;margin-top:8px}.button-card,.dpi-card{display:flex;align-items:center;gap:10px;min-width:174px;padding:9px 12px;background:#0f0c11;border:1px solid #e00037;border-radius:10px;box-shadow:0 0 11px #ff003e30}.button-card img{height:40px;width:40px;border:0;border-radius:50%;object-fit:contain}.button-card small,.dpi-card small{display:block;color:var(--red);font-size:11px;font-weight:900;letter-spacing:.6px}.button-card strong,.dpi-card strong{display:block;color:#fff;font-size:21px;margin-top:2px;font-weight:900}.dpi-card{min-width:112px;border-color:#6e5419}.dpi-card small{color:var(--gold)}.copy{margin-left:auto;background:#1b1118;color:#f6d1d9;border:1px solid #5d2534;border-radius:8px;padding:8px 10px;font-size:10px;font-weight:800}.copy:hover{border-color:#f36}.help-note{font-size:10px;color:#a5a1aa;line-height:1.6;margin:10px 0 0}.generator.busy{opacity:.65;pointer-events:none}
+.tips{text-align:center;max-width:900px;margin:80px auto 0;padding:0 20px 40px}.tips-label{display:inline-block;padding:8px 17px;border-radius:40px;border:1px solid #8b6913;background:#221a08;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:1px}.tips h2{font-size:27px;font-weight:900;margin:20px 0 12px}.tips h2 span{color:var(--gold)}.tips p{max-width:790px;margin:auto;color:#ada9b4;line-height:1.8;font-size:12px}
+.footer{border-top:1px solid #303039;background:#09090d;margin-top:5px;padding:42px 0 30px}.footer-inner{width:min(1260px,calc(100% - 40px));margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}.footer h3{border-left:3px solid var(--red);padding-left:11px;font-size:15px;font-weight:900;margin:0 0 18px}.footer p,.footer a{font-size:12px;color:#aaa6b0;line-height:1.8}.footer a{display:block;margin:5px 0}.footer a:hover{color:#fff}.status{color:#5fe9a5!important}.disclaimer{width:min(1260px,calc(100% - 40px));margin:24px auto 0;padding-top:15px;border-top:1px solid #2d2930;color:#88838d;font-size:10px;line-height:1.7}.loading{position:fixed;inset:0;z-index:30;background:#050507ee;display:none;align-items:center;justify-content:center;padding:20px}.loading.active{display:flex}.loading-box{width:min(360px,100%);padding:28px;text-align:center;border:1px solid var(--red);border-radius:15px;background:#100c11;box-shadow:0 0 50px #e9003a2e}.loader{width:56px;height:56px;border:3px solid #4b1c2c;border-top-color:var(--red);border-radius:50%;margin:0 auto 20px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.loading-box h2{font-size:20px}.loading-box p{color:#a9a5b0;font-size:12px}.loadbar{height:6px;background:#2a1720;border-radius:8px;overflow:hidden}.loadbar div{height:100%;width:0;background:var(--red);transition:width .1s linear}.toast{position:fixed;z-index:50;bottom:20px;left:50%;transform:translate(-50%,20px);background:#1b1016;border:1px solid #e31d4b;color:white;border-radius:8px;padding:12px 18px;opacity:0;pointer-events:none;transition:.2s;font-size:12px}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1050px){.workspace{grid-template-columns:minmax(0,1fr) minmax(390px,470px);gap:16px}.sidebar.left{grid-column:1;grid-row:1;transform:none}.generator{grid-column:2;grid-row:1 / span 2}.sidebar.right{grid-column:1;grid-row:2;transform:none}}
+@media(max-width:700px){.nav-inner{padding:12px 15px;min-height:64px}.brand img{width:38px;height:38px}.brand-name{font-size:22px}.nav-links{gap:12px}.nav-links a{font-size:10px}.nav-links a:nth-child(2){display:none}.hero{padding:26px 13px 8px}.hero h1{font-size:25px}.workspace{width:min(480px,calc(100% - 24px));display:flex;flex-direction:column;gap:18px;margin-top:23px}.generator{width:100%;order:1}.sidebar.left{width:100%;order:2}.sidebar.right{width:100%;order:3}.sidebar{padding:16px}.tips{margin-top:45px}.tips h2{font-size:23px}.footer-inner{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px}.footer h3{font-size:13px}}
+@media(max-width:400px){.generator{padding:11px}.seg span{font-size:10px}.action-line{grid-template-columns:minmax(0,1fr) auto;gap:6px}.premium{grid-column:1 / -1}.model{font-size:10px}.calibrate{padding:0 10px}.metric-head{font-size:11px}.button-card{min-width:155px}.copy{margin-left:0}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Display a compact, unclipped version of the official portrait in the header. */
+.brand img{object-fit:contain;background:#050507;flex-shrink:0}
+.button-card img{object-fit:contain;background:#050507}
+.metrics[hidden],.copy[hidden]{display:none!important}
+.metrics:not([hidden]){animation:appear .4s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:701px){.brand img{width:50px;height:50px}}
+
+/* Fix: background images are not auto-inverted like HTML img elements by dark-mode extensions. */
+:root{color-scheme:dark}
+.brand-emblem,.button-emblem{
+  display:inline-block;flex:0 0 auto;
+  background-color:#050507;
+  background-image:url("assets/logo-stex.png");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  border-radius:50%;
+  border:0;
+  box-shadow:0 0 0 1px #e71b50,0 0 12px #e7004359;
+}
+.brand-emblem{width:52px;height:52px}
+.button-emblem{width:40px;height:40px}
+@media(max-width:700px){.brand-emblem{width:40px;height:40px}}
+</style>
+</head>
+<body>
+<header class="topbar" id="inicio"><div class="nav-inner">
+  <a class="brand" href="index.html" aria-label="SENSI $TEX, inicio"><span class="brand-emblem" role="img" aria-label="Logo SENSI $TEX, guerrero con corona"></span><span class="brand-name">SENSI <em>$TEX</em></span></a>
+  <nav class="nav-links" aria-label="Menú principal"><a href="index.html">INICIO</a><a href="#ventajas">VENTAJAS</a><a href="#comunidad">COMUNIDAD</a></nav>
+</div></header>
+<main>
+  <section class="hero"><span class="eyebrow">CALIBRACIÓN PROFESIONAL 2026</span><h1>OPTIMIZA TU DISPOSITIVO PARA EL <span>MÁXIMO NIVEL</span></h1><p>Genera valores de sensibilidad orientativos para tu dispositivo. Elige el modo, la intensidad y el modelo, y prueba los resultados en el campo de entrenamiento.</p></section>
+  <section class="workspace" aria-label="Generador de sensibilidad">
+    <aside class="sidebar left"><h2>💡 GUÍA RÁPIDA</h2><p>Selecciona tu modo (Con o Sin DPI), elige la intensidad adecuada y escribe tu modelo de teléfono para generar una configuración de referencia.</p></aside>
+    <div class="generator" id="generador">
+      <div class="seg two" role="radiogroup" aria-label="Configuración DPI">
+        <label><input type="radio" name="dpiMode" value="con"><span><b class="cross">X</b> CON DPI</span></label>
+        <label><input type="radio" name="dpiMode" value="sin" checked><span><b class="cross">X</b> SIN DPI</span></label>
+      </div>
+      <div class="seg three" role="radiogroup" aria-label="Intensidad">
+        <label><input type="radio" name="level" value="baja"><span><b class="cross">X</b> BAJA</span></label>
+        <label><input type="radio" name="level" value="media"><span><b class="cross">X</b> MEDIA</span></label>
+        <label><input type="radio" name="level" value="alta" checked><span><b class="cross">X</b> ALTA</span></label>
+      </div>
+      <div class="action-line"><div class="input-wrap"><input id="device" class="model" type="text" maxlength="70" placeholder="MODELO DE CELULAR" aria-label="Modelo de celular" autocomplete="off"></div><button class="calibrate" id="calibrate" type="button">↻ CALIBRAR</button><button class="premium" id="premium" type="button">👑 PREMIUM</button></div>
+      <div class="error" id="error" role="alert"></div>
+      <div class="metrics" id="metrics" aria-live="polite"></div>
+      <div class="bottom-row"><div class="button-card"><span class="button-emblem" aria-hidden="true"></span><div><small>BOTÓN</small><strong id="fire">--%</strong></div></div><div class="dpi-card" id="dpi-card" hidden><div><small>DPI SUGERIDO</small><strong id="dpi-value">--</strong></div></div><button class="copy" id="copy" type="button" hidden>⧉ COPIAR</button></div>
+      <p class="help-note" id="result-note">Escribe tu modelo y pulsa CALIBRAR: al finalizar la animación aparecerán las seis sensibilidades.</p>
+    </div>
+    <aside class="sidebar right"><h2>⭐ MODO PRO</h2><p>Algunos dispositivos de gama alta usan escalas de interfaz distintas. Antes de cambiar el DPI, guarda tu valor original y prueba los ajustes poco a poco.</p></aside>
+  </section>
+  <section class="tips" id="ventajas"><span class="tips-label">CONSEJOS DE RENDIMIENTO</span><h2>RECOMENDACIONES PARA EL <span>USO COMPETITIVO</span></h2><p>Asegúrate de limpiar la pantalla de tu móvil antes de aplicar cambios. Tras ajustar la sensibilidad, practica en entrenamiento y modifica un parámetro a la vez para evaluar los resultados.</p></section>
+</main>
+<footer class="footer" id="comunidad"><div class="footer-inner">
+  <section><h3>SENSI $TEX</h3><p>Generador de sensibilidad independiente para jugadores de Free Fire. Configuraciones orientativas para probar y personalizar.</p></section>
+  <section><h3>NAVEGACIÓN</h3><a href="index.html">Inicio</a><a href="#ventajas">Ventajas</a><a href="#generador">Generador</a></section>
+  <section><h3>COMUNIDAD</h3><a href="https://whatsapp.com/channel/0029Va87Jcq2Jl8MK13wnV2p" target="_blank" rel="noopener noreferrer">◉ Canal de WhatsApp</a><a href="https://www.tiktok.com/@stex.z" target="_blank" rel="noopener noreferrer">♪ TikTok @stex.z</a><a href="https://www.youtube.com/@Stex7" target="_blank" rel="noopener noreferrer">▶ YouTube @Stex7</a></section>
+  <section><h3>ESTADO DEL SERVICIO</h3><p class="status">● Generador disponible (2026)</p><p>Funciona directamente en el navegador.</p></section>
+</div><div class="disclaimer">© 2026 SENSI $TEX. Sitio independiente no afiliado ni respaldado por Garena. Las cifras son sugerencias, no provienen de una medición automática del dispositivo y no garantizan tiros a la cabeza.</div></footer>
+<div class="loading" id="loading" role="dialog" aria-modal="true" aria-label="Generando sensibilidad" aria-hidden="true"><div class="loading-box"><div class="loader"></div><h2>GENERANDO SENSIBILIDAD</h2><p>Preparando tu configuración orientativa…</p><div class="loadbar"><div id="progress"></div></div><p id="seconds">3 s</p></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const names=['GENERAL','PUNTO ROJO','MIRA 2X','MIRA 4X','FRANCOTIRADOR','CÁMARA 360'];
+let current=null,progressTimer=null;
+function selected(name){return document.querySelector(`input[name="${name}"]:checked`).value;}
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+function toast(msg){const e=$('toast');e.textContent=msg;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2500);}
+function render(c){
+ $('metrics').hidden=!c;
+ $('copy').hidden=!c;
+ $('metrics').innerHTML=names.map((n,i)=>{const v=c?c.values[i]:null;return `<div class="metric"><div class="metric-head"><span class="metric-label"><b>X</b>${n}</span><span class="metric-number">${v??'--'}</span></div><div class="track"><div class="fill" style="width:${v===null?0:v/2}%"></div></div></div>`}).join('');
+ $('fire').textContent=c?c.button+'%':'--%';
+ $('dpi-card').hidden=!c||c.dpiMode==='sin'||c.dpi==='N/A';
+ $('dpi-value').textContent=c?c.dpi:'--';
+ $('result-note').textContent=c?'Sensibilidad generada. Prueba los valores en entrenamiento y ajusta según tu comodidad.':'Escribe tu modelo y pulsa CALIBRAR: al finalizar la animación aparecerán las seis sensibilidades.';
+}
+render(null);
+function calculate(device,dpiMode,level,premium){
+ const lower=device.toLowerCase();let hash=7;
+ for(const char of lower)hash=(hash*31+char.charCodeAt(0))%100003;
+ const base=[182,188,178,182,96,172];
+ const levelOffset={baja:-17,media:-5,alta:6}[level];
+ const tweak=(hash%7)-3;
+ const values=base.map((v,i)=>clamp(v+levelOffset+(i===4?Math.round(levelOffset/2):0)+tweak+(premium&&i<4?3:0),0,200));
+ const isApple=/iphone|ipad|ios/.test(lower);
+ const dpi=dpiMode==='sin'?'SIN DPI':isApple?'N/A':String(clamp(450+(hash%13)*10+(level==='alta'?20:0),400,650));
+ const button=clamp(43+(hash%8)+(level==='alta'?2:0),38,60);
+ return {device,dpiMode,level,values,dpi,button,premium};
+}
+function start(premium){
+ const device=$('device').value.trim().replace(/\s+/g,' ');
+ if(device.length<2){$('error').textContent='Escribe el modelo de tu celular.';$('device').focus();return;}
+ $('error').textContent='';
+ current=null;render(null);
+ const dpiMode=selected('dpiMode'),level=selected('level');
+ const overlay=$('loading'),startTime=Date.now(),duration=2600;
+ $('calibrate').disabled=true;$('premium').disabled=true;
+ overlay.classList.add('active');overlay.setAttribute('aria-hidden','false');
+ $('progress').style.width='0%';$('seconds').textContent='3 s';
+ clearInterval(progressTimer);
+ progressTimer=setInterval(()=>{
+  const ratio=clamp((Date.now()-startTime)/duration,0,1);
+  $('progress').style.width=Math.round(ratio*100)+'%';$('seconds').textContent=Math.ceil((1-ratio)*duration/1000)+' s';
+  if(ratio>=1){clearInterval(progressTimer);overlay.classList.remove('active');overlay.setAttribute('aria-hidden','true');$('calibrate').disabled=false;$('premium').disabled=false;current=calculate(device,dpiMode,level,premium);render(current);$('metrics').scrollIntoView({behavior:'smooth',block:'nearest'});}
+ },65);
+}
+$('calibrate').addEventListener('click',()=>start(false));
+$('premium').addEventListener('click',()=>start(true));
+$('device').addEventListener('keydown',e=>{if(e.key==='Enter')start(false);});
+$('copy').addEventListener('click',async()=>{
+ if(!current){toast('Primero genera una sensibilidad.');return;}
+ const c=current;
+ const value=`SENSI $TEX\nDispositivo: ${c.device}\nModo: ${c.dpiMode==='con'?'CON DPI':'SIN DPI'}\nIntensidad: ${c.level.toUpperCase()}\n${names.map((n,i)=>n+': '+c.values[i]).join('\n')}\nBotón: ${c.button}%\nDPI: ${c.dpi}\nValores orientativos para entrenamiento.`;
+ try{await navigator.clipboard.writeText(value);toast('¡Configuración copiada!');}
+ catch{const a=document.createElement('textarea');a.value=value;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('¡Configuración copiada!');}catch{toast('No se pudo copiar en este navegador.');}a.remove();}
+});
+</script>
+</body>
+</html>
