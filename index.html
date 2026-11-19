@@ -88,6 +88,12 @@ footer p{margin:5px 0}
 .gate-action{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px;padding:13px 14px;border-radius:12px;border:1px solid #ff1760;background:linear-gradient(115deg,#ff0851,#b8003c);color:#fff;font-size:12px;font-weight:900;letter-spacing:.35px;text-align:center}
 .gate-action.confirm{background:#17151d;border-color:#3b3442;color:#fff}
 .gate-action:hover{filter:brightness(1.12)}
+.channel-code-form{display:grid;gap:9px;margin-top:4px}
+.gate-label{font-size:10px;font-weight:900;letter-spacing:1px;color:#ff668e;text-align:left}
+.gate-code-input{width:100%;height:48px;border:1px solid #59404d;border-radius:10px;background:#0d0b12;color:#fff;padding:0 14px;font-size:14px;font-weight:900;letter-spacing:2px;text-align:center;text-transform:uppercase;outline:none}
+.gate-code-input:focus{border-color:#ff2458;box-shadow:0 0 0 3px #ff245822}
+.gate-code-input::placeholder{color:#77717d;font-size:10px;letter-spacing:1px}
+.gate-error{min-height:0;margin:0;color:#ff829d;font-size:10px;text-align:center}
 .gate-foot{color:#817987;font-size:10px;line-height:1.5;text-align:center;margin:12px 0 0}
 @media(max-width:760px){header nav a:not(.nav-cta){display:none}.tools,.social{grid-template-columns:1fr}.hero{min-height:530px}.hero p{font-size:13px}.section{padding:38px 0}.tool p{min-height:0}}
 @media(max-width:420px){.brand{font-size:23px}.brand .emblem{width:38px;height:38px}header nav .nav-cta{font-size:10px;padding:9px 10px}.modal{padding:19px 14px 15px}.modal-brand{font-size:23px}.modal-option{padding:12px 10px}.modal-option strong{font-size:11px}}
@@ -139,9 +145,14 @@ footer p{margin:5px 0}
     <p class="gate-copy">Para continuar al generador, visita y sigue el canal oficial de SENSI $TEX en WhatsApp.</p>
     <div class="gate-actions">
       <a class="gate-action" id="open-whatsapp-channel" href="https://whatsapp.com/channel/0029Va87Jcq2Jl8MK13wnV2p" target="_blank" rel="noopener noreferrer">◉ SEGUIR CANAL DE WHATSAPP</a>
-      <button class="gate-action confirm" id="confirm-whatsapp-follow" type="button" hidden>✓ YA ESTOY SIGUIENDO</button>
+      <form id="channel-code-form" class="channel-code-form" hidden>
+        <label class="gate-label" for="channel-access-code">CÓDIGO DE ACCESO</label>
+        <input id="channel-access-code" class="gate-code-input" type="text" maxlength="20" placeholder="INTRODUCE EL CÓDIGO" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="channel-code-error">
+        <button class="gate-action confirm" type="submit">✓ VERIFICAR CÓDIGO</button>
+        <p class="gate-error" id="channel-code-error" role="alert" aria-live="polite"></p>
+      </form>
     </div>
-    <p class="gate-foot" id="whatsapp-gate-hint">Al regresar a esta pestaña aparecerá el botón para continuar.</p>
+    <p class="gate-foot" id="whatsapp-gate-hint">Abre el canal y, al regresar a esta pestaña, podrás introducir el código de acceso.</p>
   </div>
 </div>
 <div class="modal-layer" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
@@ -210,11 +221,14 @@ footer p{margin:5px 0}
  document.getElementById('close-welcome').addEventListener('click',()=>{modal.hidden=true;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)modal.hidden=true;});
 
- // El acceso se concede tras volver de la pestaña del canal y confirmar manualmente.
+ // El usuario debe volver de WhatsApp e introducir el código del canal.
  const gate=document.getElementById('whatsapp-gate');
  const openChannel=document.getElementById('open-whatsapp-channel');
- const confirmFollow=document.getElementById('confirm-whatsapp-follow');
+ const codeForm=document.getElementById('channel-code-form');
+ const codeInput=document.getElementById('channel-access-code');
+ const codeError=document.getElementById('channel-code-error');
  const gateHint=document.getElementById('whatsapp-gate-hint');
+ const ACCESS_CODE='STEXZ';
  let channelTabOpened=false;
  let leftPageAfterChannel=false;
  function openGate(){
@@ -224,31 +238,42 @@ footer p{margin:5px 0}
   }
   modal.hidden=true;
   gate.hidden=false;
-  confirmFollow.hidden=true;
+  codeForm.hidden=true;
+  codeInput.value='';
+  codeError.textContent='';
   channelTabOpened=false;
   leftPageAfterChannel=false;
-  gateHint.textContent='Al regresar a esta pestaña aparecerá el botón para continuar.';
+  gateHint.textContent='Abre el canal y, al regresar a esta pestaña, podrás introducir el código de acceso.';
  }
  function markLeaving(){
   if(channelTabOpened)leftPageAfterChannel=true;
  }
- function showConfirmOnReturn(){
+ function showCodeOnReturn(){
   if(channelTabOpened && leftPageAfterChannel && document.visibilityState==='visible'){
-   confirmFollow.hidden=false;
-   gateHint.textContent='Ya regresaste. Confirma para entrar al generador.';
+   codeForm.hidden=false;
+   gateHint.textContent='Introduce el código publicado en el canal para continuar.';
+   codeInput.focus();
   }
  }
  openChannel.addEventListener('click',()=>{
   channelTabOpened=true;
-  gateHint.textContent='Se abrió el canal en otra pestaña. Cuando regreses, podrás continuar.';
+  gateHint.textContent='Se abrió el canal en otra pestaña. Regresa aquí para introducir el código.';
  });
  document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='hidden')markLeaving();
-  else showConfirmOnReturn();
+  else showCodeOnReturn();
  });
  window.addEventListener('blur',markLeaving);
- window.addEventListener('focus',showConfirmOnReturn);
- confirmFollow.addEventListener('click',()=>{
+ window.addEventListener('focus',showCodeOnReturn);
+ codeForm.addEventListener('submit',event=>{
+  event.preventDefault();
+  const entered=codeInput.value.trim().toUpperCase();
+  if(entered!==ACCESS_CODE){
+   codeError.textContent='Código incorrecto. Revisa el código publicado en el canal.';
+   codeInput.focus();
+   codeInput.select();
+   return;
+  }
   sessionStorage.setItem('sensi_channel_gate_ok','1');
   window.location.href='generador.html';
  });
