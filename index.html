@@ -80,6 +80,15 @@ footer p{margin:5px 0}
 .modal-stats b{display:block;color:var(--hot);font-size:14px;font-weight:900}
 .modal-stats small{display:block;color:#8f8796;font-size:8px;letter-spacing:.5px;margin-top:5px;font-weight:800}
 .disclaimer{text-align:center;color:#766f7e;font-size:9px;line-height:1.5;margin:10px 0 0}
+
+/* Acceso previo al generador mediante el canal oficial de WhatsApp. */
+#whatsapp-gate{z-index:20}
+.gate-copy{color:#aaa2b1;font-size:12px;line-height:1.7;text-align:center;margin:12px 4px 18px}
+.gate-actions{display:grid;gap:10px}
+.gate-action{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px;padding:13px 14px;border-radius:12px;border:1px solid #ff1760;background:linear-gradient(115deg,#ff0851,#b8003c);color:#fff;font-size:12px;font-weight:900;letter-spacing:.35px;text-align:center}
+.gate-action.confirm{background:#17151d;border-color:#3b3442;color:#fff}
+.gate-action:hover{filter:brightness(1.12)}
+.gate-foot{color:#817987;font-size:10px;line-height:1.5;text-align:center;margin:12px 0 0}
 @media(max-width:760px){header nav a:not(.nav-cta){display:none}.tools,.social{grid-template-columns:1fr}.hero{min-height:530px}.hero p{font-size:13px}.section{padding:38px 0}.tool p{min-height:0}}
 @media(max-width:420px){.brand{font-size:23px}.brand .emblem{width:38px;height:38px}header nav .nav-cta{font-size:10px;padding:9px 10px}.modal{padding:19px 14px 15px}.modal-brand{font-size:23px}.modal-option{padding:12px 10px}.modal-option strong{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -96,7 +105,7 @@ footer p{margin:5px 0}
     <section class="hero">
       <div class="kicker">⚡ GENERADOR DE SENSIBILIDAD 2026</div>
       <h1>DOMINA LA MIRA CON <span>SENSI $TEX</span></h1>
-      <p>Descubre valores de sensibilidad orientativos para Free Fire, tanto en Android como en iOS. Ajusta tu configuración y ponla a prueba en el entrenamiento.</p>
+      <p>Descubre las configuraciones SENSI $TEX para Free Fire en Android e iOS, diseñadas para mejorar tu control y ayudarte a conectar más tiros a la cabeza.</p>
       <div class="ctas"><a class="cta main" href="generador.html">⚡ GENERAR SENSIBILIDAD</a><a class="cta outline" href="https://www.youtube.com/@Stex7" target="_blank" rel="noopener noreferrer">▶ MI CANAL DE YOUTUBE</a></div>
     </section>
     <section class="section" id="herramientas">
@@ -119,15 +128,27 @@ footer p{margin:5px 0}
     </section>
   </main>
   <footer>
-    <p>© 2026 SENSI $TEX · Sitio independiente, no afiliado ni respaldado por Garena.</p>
-    <p>Las configuraciones son orientativas. No garantizan precisión de tiro ni analizan automáticamente el hardware.</p>
+    <p>SENSI $TEX · CONTROL, PRECISIÓN Y JUEGO COMPETITIVO.</p>
   </footer>
+</div>
+<div class="modal-layer" id="whatsapp-gate" role="dialog" aria-modal="true" aria-labelledby="whatsapp-gate-title" hidden>
+  <div class="modal">
+    <button class="close" type="button" id="close-whatsapp-gate" aria-label="Cerrar ventana de acceso">×</button>
+    <div class="modal-brand" id="whatsapp-gate-title"><span class="emblem" aria-hidden="true"></span><span>SENSI <em>$TEX</em></span></div>
+    <div class="modal-sub"><span class="mini-tag">◉ CANAL OFICIAL</span></div>
+    <p class="gate-copy">Para continuar al generador, visita y sigue el canal oficial de SENSI $TEX en WhatsApp.</p>
+    <div class="gate-actions">
+      <a class="gate-action" id="open-whatsapp-channel" href="https://whatsapp.com/channel/0029Va87Jcq2Jl8MK13wnV2p" target="_blank" rel="noopener noreferrer">◉ SEGUIR CANAL DE WHATSAPP</a>
+      <button class="gate-action confirm" id="confirm-whatsapp-follow" type="button" hidden>✓ YA ESTOY SIGUIENDO</button>
+    </div>
+    <p class="gate-foot" id="whatsapp-gate-hint">Al regresar a esta pestaña aparecerá el botón para continuar.</p>
+  </div>
 </div>
 <div class="modal-layer" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
   <div class="modal">
     <button class="close" type="button" id="close-welcome" aria-label="Cerrar ventana de bienvenida">×</button>
     <div class="modal-brand" id="welcome-title"><span class="emblem" aria-hidden="true"></span><span>SENSI <em>$TEX</em></span></div>
-    <div class="modal-sub"><span class="mini-tag">⚡ ALGORITMO DE SENSIBILIDAD 2026</span><p>Configuraciones orientativas para Android e iOS</p></div>
+    <div class="modal-sub"><span class="mini-tag">⚡ ALGORITMO DE SENSIBILIDAD 2026</span><p>Configuraciones SENSI $TEX para Android e iOS</p></div>
     <div class="modal-options">
       <a class="modal-option primary" href="generador.html">
         <span class="flag">¡ENTRA AQUÍ!</span>
@@ -188,6 +209,56 @@ footer p{margin:5px 0}
  animar();
  document.getElementById('close-welcome').addEventListener('click',()=>{modal.hidden=true;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)modal.hidden=true;});
+
+ // El acceso se concede tras volver de la pestaña del canal y confirmar manualmente.
+ const gate=document.getElementById('whatsapp-gate');
+ const openChannel=document.getElementById('open-whatsapp-channel');
+ const confirmFollow=document.getElementById('confirm-whatsapp-follow');
+ const gateHint=document.getElementById('whatsapp-gate-hint');
+ let channelTabOpened=false;
+ let leftPageAfterChannel=false;
+ function openGate(){
+  if(sessionStorage.getItem('sensi_channel_gate_ok')==='1'){
+   window.location.href='generador.html';
+   return;
+  }
+  modal.hidden=true;
+  gate.hidden=false;
+  confirmFollow.hidden=true;
+  channelTabOpened=false;
+  leftPageAfterChannel=false;
+  gateHint.textContent='Al regresar a esta pestaña aparecerá el botón para continuar.';
+ }
+ function markLeaving(){
+  if(channelTabOpened)leftPageAfterChannel=true;
+ }
+ function showConfirmOnReturn(){
+  if(channelTabOpened && leftPageAfterChannel && document.visibilityState==='visible'){
+   confirmFollow.hidden=false;
+   gateHint.textContent='Ya regresaste. Confirma para entrar al generador.';
+  }
+ }
+ openChannel.addEventListener('click',()=>{
+  channelTabOpened=true;
+  gateHint.textContent='Se abrió el canal en otra pestaña. Cuando regreses, podrás continuar.';
+ });
+ document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden')markLeaving();
+  else showConfirmOnReturn();
+ });
+ window.addEventListener('blur',markLeaving);
+ window.addEventListener('focus',showConfirmOnReturn);
+ confirmFollow.addEventListener('click',()=>{
+  sessionStorage.setItem('sensi_channel_gate_ok','1');
+  window.location.href='generador.html';
+ });
+ document.getElementById('close-whatsapp-gate').addEventListener('click',()=>{gate.hidden=true;});
+ // Todas las entradas visibles al generador pasan por el mismo requisito.
+ document.querySelectorAll('a[href="generador.html"]').forEach(link=>{
+  link.addEventListener('click',event=>{event.preventDefault();openGate();});
+ });
+ // Si alguien abre generador.html directamente, vuelve a esta pantalla con el requisito abierto.
+ if(new URLSearchParams(window.location.search).get('canal')==='1')openGate();
 })();
 </script>
 </body>

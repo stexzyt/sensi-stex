@@ -4,8 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#050507">
-<meta name="description" content="SENSI $TEX — generador orientativo de sensibilidades Free Fire con DPI y sin DPI.">
+<meta name="description" content="SENSI $TEX — configuraciones de sensibilidad Free Fire con DPI y sin DPI para mejorar el control y la precisión.">
 <title>SENSI $TEX | Generador de sensibilidad</title>
+<script>
+// Evita el acceso directo al generador si todavía no se completó el paso de WhatsApp en esta pestaña.
+try {
+  if (sessionStorage.getItem('sensi_channel_gate_ok') !== '1') {
+    window.location.replace('index.html?canal=1');
+  }
+} catch (error) {
+  window.location.replace('index.html?canal=1');
+}
+</script>
 <link rel="icon" type="image/png" href="assets/logo-stex.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -54,7 +64,7 @@
   <nav class="nav-links" aria-label="Menú principal"><a href="index.html">INICIO</a><a href="#ventajas">VENTAJAS</a><a href="#comunidad">COMUNIDAD</a></nav>
 </div></header>
 <main>
-  <section class="hero"><span class="eyebrow">CALIBRACIÓN PROFESIONAL 2026</span><h1>OPTIMIZA TU DISPOSITIVO PARA EL <span>MÁXIMO NIVEL</span></h1><p>Genera valores de sensibilidad orientativos para tu dispositivo. Elige el modo, la intensidad y el modelo, y prueba los resultados en el campo de entrenamiento.</p></section>
+  <section class="hero"><span class="eyebrow">CALIBRACIÓN PROFESIONAL 2026</span><h1>OPTIMIZA TU DISPOSITIVO PARA EL <span>MÁXIMO NIVEL</span></h1><p>Genera configuraciones SENSI $TEX para tu dispositivo. Elige el modo, la intensidad y el modelo para mejorar tu control y ayudarte a conectar más tiros a la cabeza.</p></section>
   <section class="workspace" aria-label="Generador de sensibilidad">
     <aside class="sidebar left"><h2>💡 GUÍA RÁPIDA</h2><p>Selecciona tu modo (Con o Sin DPI), elige la intensidad adecuada y escribe tu modelo de teléfono para generar una configuración de referencia.</p></aside>
     <div class="generator" id="generador">
@@ -78,12 +88,12 @@
   <section class="tips" id="ventajas"><span class="tips-label">CONSEJOS DE RENDIMIENTO</span><h2>RECOMENDACIONES PARA EL <span>USO COMPETITIVO</span></h2><p>Asegúrate de limpiar la pantalla de tu móvil antes de aplicar cambios. Tras ajustar la sensibilidad, practica en entrenamiento y modifica un parámetro a la vez para evaluar los resultados.</p></section>
 </main>
 <footer class="footer" id="comunidad"><div class="footer-inner">
-  <section><h3>SENSI $TEX</h3><p>Generador de sensibilidad independiente para jugadores de Free Fire. Configuraciones orientativas para probar y personalizar.</p></section>
+  <section><h3>SENSI $TEX</h3><p>Sensibilidades SENSI $TEX diseñadas para mejorar el control, la precisión y ayudarte a conectar más tiros a la cabeza en Free Fire.</p></section>
   <section><h3>NAVEGACIÓN</h3><a href="index.html">Inicio</a><a href="#ventajas">Ventajas</a><a href="#generador">Generador</a></section>
   <section><h3>COMUNIDAD</h3><a href="https://whatsapp.com/channel/0029Va87Jcq2Jl8MK13wnV2p" target="_blank" rel="noopener noreferrer">◉ Canal de WhatsApp</a><a href="https://www.tiktok.com/@stex.z" target="_blank" rel="noopener noreferrer">♪ TikTok @stex.z</a><a href="https://www.youtube.com/@Stex7" target="_blank" rel="noopener noreferrer">▶ YouTube @Stex7</a></section>
   <section><h3>ESTADO DEL SERVICIO</h3><p class="status">● Generador disponible (2026)</p><p>Funciona directamente en el navegador.</p></section>
-</div><div class="disclaimer">© 2026 SENSI $TEX. Sitio independiente no afiliado ni respaldado por Garena. Las cifras son sugerencias, no provienen de una medición automática del dispositivo y no garantizan tiros a la cabeza.</div></footer>
-<div class="loading" id="loading" role="dialog" aria-modal="true" aria-label="Generando sensibilidad" aria-hidden="true"><div class="loading-box"><div class="loader"></div><h2>GENERANDO SENSIBILIDAD</h2><p>Preparando tu configuración orientativa…</p><div class="loadbar"><div id="progress"></div></div><p id="seconds">3 s</p></div></div>
+</div></footer>
+<div class="loading" id="loading" role="dialog" aria-modal="true" aria-label="Generando sensibilidad" aria-hidden="true"><div class="loading-box"><div class="loader"></div><h2>GENERANDO SENSIBILIDAD</h2><p>Preparando tu configuración SENSI $TEX…</p><div class="loadbar"><div id="progress"></div></div><p id="seconds">3 s</p></div></div>
 <div class="toast" id="toast" role="status"></div>
 <script>
 'use strict';
@@ -138,7 +148,7 @@ $('device').addEventListener('keydown',e=>{if(e.key==='Enter')start(false);});
 $('copy').addEventListener('click',async()=>{
  if(!current){toast('Primero genera una sensibilidad.');return;}
  const c=current;
- const value=`SENSI $TEX\nDispositivo: ${c.device}\nModo: ${c.dpiMode==='con'?'CON DPI':'SIN DPI'}\nIntensidad: ${c.level.toUpperCase()}\n${names.map((n,i)=>n+': '+c.values[i]).join('\n')}\nBotón: ${c.button}%\nDPI: ${c.dpi}\nValores orientativos para entrenamiento.`;
+ const value=`SENSI $TEX\nDispositivo: ${c.device}\nModo: ${c.dpiMode==='con'?'CON DPI':'SIN DPI'}\nIntensidad: ${c.level.toUpperCase()}\n${names.map((n,i)=>n+': '+c.values[i]).join('\n')}\nBotón: ${c.button}%\nDPI: ${c.dpi}\nConfiguración SENSI $TEX para entrenamiento.`;
  try{await navigator.clipboard.writeText(value);toast('¡Configuración copiada!');}
  catch{const a=document.createElement('textarea');a.value=value;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('¡Configuración copiada!');}catch{toast('No se pudo copiar en este navegador.');}a.remove();}
 });
